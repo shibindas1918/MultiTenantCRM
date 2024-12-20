@@ -80,6 +80,22 @@ namespace MultiTenantCRM.Migrations
                     b.HasKey("TenantId");
 
                     b.ToTable("Tenants");
+
+                    b.HasData(
+                        new
+                        {
+                            TenantId = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Domain = "tenant-a.com",
+                            Name = "Tenant A"
+                        },
+                        new
+                        {
+                            TenantId = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Domain = "tenant-b.com",
+                            Name = "Tenant B"
+                        });
                 });
 
             modelBuilder.Entity("MultiTenantCRM.Models.User", b =>
@@ -100,7 +116,6 @@ namespace MultiTenantCRM.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TenantId")
@@ -111,6 +126,22 @@ namespace MultiTenantCRM.Migrations
                     b.HasIndex("TenantId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            Email = "admin@tenant-a.com",
+                            Name = "Admin A",
+                            TenantId = 1
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            Email = "admin@tenant-b.com",
+                            Name = "Admin B",
+                            TenantId = 2
+                        });
                 });
 
             modelBuilder.Entity("MultiTenantCRM.Models.Contact", b =>

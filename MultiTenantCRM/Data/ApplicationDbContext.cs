@@ -3,11 +3,11 @@ using MultiTenantCRM.Models;
 
 namespace MultiTenantCRM.Data
 {
-    public class ApplicationDbContext :DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<User> Users { get; set; }
@@ -16,23 +16,34 @@ namespace MultiTenantCRM.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // Tenant Configuration
+            //Tenant Configuration
             modelBuilder.Entity<Tenant>().HasKey(t => t.TenantId);
             modelBuilder.Entity<Tenant>().Property(t => t.Name).IsRequired().HasMaxLength(100);
 
-            // User Configuration
+            //User Configuration
             modelBuilder.Entity<User>().HasKey(u => u.UserId);
             modelBuilder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(150);
             modelBuilder.Entity<User>().HasOne(u => u.Tenant)
                                         .WithMany(t => t.Users)
                                         .HasForeignKey(u => u.TenantId);
 
-            // Customer Configuration
+            //Customer Configuration
             modelBuilder.Entity<Contact>().HasKey(c => c.ContactId);
             modelBuilder.Entity<Contact>().Property(c => c.Name).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<Contact>().HasOne(c => c.Tenant)
                                             .WithMany(t => t.Customers)
                                             .HasForeignKey(c => c.TenantId);
+            // Seed tenants
+            modelBuilder.Entity<Tenant>().HasData(
+                 new Tenant { TenantId = 1, Name = "Tenant A", Domain = "tenant-a.com" },
+                 new Tenant { TenantId = 2, Name = "Tenant B", Domain = "tenant-b.com" }
+                );
+
+            // Seed users
+            modelBuilder.Entity<User>().HasData(
+                new User { UserId = 1, Name = "Admin A", Email = "admin@tenant-a.com", TenantId = 1 },
+                new User { UserId = 2, Name = "Admin B", Email = "admin@tenant-b.com", TenantId = 2 }
+                );
             //modelBuilder.entity<tenant>()
             //    .hasmany(t => t.user)
             //    .withone(u => u.tenant)

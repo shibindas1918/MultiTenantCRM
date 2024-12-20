@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace MultiTenantCRM.Migrations
 {
     /// <inheritdoc />
@@ -58,7 +60,7 @@ namespace MultiTenantCRM.Migrations
                     TenantId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -69,6 +71,24 @@ namespace MultiTenantCRM.Migrations
                         principalTable: "Tenants",
                         principalColumn: "TenantId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tenants",
+                columns: new[] { "TenantId", "CreatedDate", "Domain", "Name" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tenant-a.com", "Tenant A" },
+                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "tenant-b.com", "Tenant B" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Email", "Name", "PasswordHash", "TenantId" },
+                values: new object[,]
+                {
+                    { 1, "admin@tenant-a.com", "Admin A", null, 1 },
+                    { 2, "admin@tenant-b.com", "Admin B", null, 2 }
                 });
 
             migrationBuilder.CreateIndex(
