@@ -16,7 +16,7 @@ namespace MultiTenantCRM.Controllers
         {
             _context = context;
         }
-
+        //Method to get all the tenants 
         [HttpGet]
         public async Task<IActionResult> GetAllTenants()
         {
@@ -24,6 +24,7 @@ namespace MultiTenantCRM.Controllers
             return Ok(tenants);
         }
 
+        //Method to Add a new Tenants 
         [HttpPost]
         public async Task<IActionResult> AddTenant([FromBody] Tenant tenant)
         {
@@ -31,6 +32,7 @@ namespace MultiTenantCRM.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetAllTenants), new { id = tenant.TenantId }, tenant);
         }
+        //Method to get the tenant by id 
         [HttpGet("{tenantId}/users")]
         public async Task<IActionResult> GetUsersByTenant(int tenantId)
         {
