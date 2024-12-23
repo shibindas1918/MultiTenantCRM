@@ -16,14 +16,14 @@ namespace MultiTenantCRM.Controllers
         {
             _context = context;
         }
-
+        //Method to get tenant by id 
         [HttpGet("{tenantId}")]
         public async Task<IActionResult> GetCustomersByTenant(int tenantId)
         {
             var customers = await _context.Contacts.Where(c => c.TenantId == tenantId).ToListAsync();
             return Ok(customers);
         }
-
+        //Method to create a customer 
         [HttpPost]
         public async Task<IActionResult> AddCustomer([FromBody] Contact customer)
         {
