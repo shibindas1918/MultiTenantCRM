@@ -25,7 +25,7 @@ namespace MultiTenantCRM.Controllers
         }
         //Method to create a customer 
         [HttpPost]
-        public async Task<IActionResult> AddCustomer([FromBody] Contact customer)
+        public async Task<IActionResult> AddCustomer( Contact customer)
         {
             _context.Contacts.Add(customer);
             await _context.SaveChangesAsync();
