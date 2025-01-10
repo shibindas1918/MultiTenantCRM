@@ -10,4 +10,13 @@
         public string Notes { get; set; }
         public Tenant Tenant { get; set; }
     }
+    //public class student
+    //{
+    //    public int Id { get; set; }
+    //    public int Name { get; set; }
+    //    public int rollno { get; set; }
+    //    public int Address { get; set; }
+    //    public int guidian { get; set; }
+    //}
+
 }
