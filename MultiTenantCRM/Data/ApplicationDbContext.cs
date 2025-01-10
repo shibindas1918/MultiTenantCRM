@@ -38,7 +38,6 @@ namespace MultiTenantCRM.Data
                  new Tenant { TenantId = 1, Name = "Tenant A", Domain = "tenant-a.com" },
                  new Tenant { TenantId = 2, Name = "Tenant B", Domain = "tenant-b.com" },
                  new Tenant { TenantId = 3, Name = "Tenant c", Domain = "tenant-b.com" }
-                
                 );
 
             // Seeding  users
