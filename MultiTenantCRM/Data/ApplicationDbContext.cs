@@ -33,7 +33,7 @@ namespace MultiTenantCRM.Data
             modelBuilder.Entity<Contact>().HasOne(c => c.Tenant)
                                             .WithMany(t => t.Customers)
                                             .HasForeignKey(c => c.TenantId);
-            // Seed tenants
+            // Seeding tenants
             modelBuilder.Entity<Tenant>().HasData(
                  new Tenant { TenantId = 1, Name = "Tenant A", Domain = "tenant-a.com" },
                  new Tenant { TenantId = 2, Name = "Tenant B", Domain = "tenant-b.com" },
@@ -41,12 +41,13 @@ namespace MultiTenantCRM.Data
                 
                 );
 
-            // Seed users
+            // Seeding  users
             modelBuilder.Entity<User>().HasData(
                 new User { UserId = 1, Name = "Admin A", Email = "admin@tenant-a.com", TenantId = 1 },
                 new User { UserId = 2, Name = "Admin B", Email = "admin@tenant-b.com", TenantId = 2 },
                 new User { UserId = 3, Name = "Admin c", Email = "admin@tenant-b.com", TenantId = 3 }
                 );
+
             //modelBuilder.entity<tenant>()
             //    .hasmany(t => t.user)
             //    .withone(u => u.tenant)
